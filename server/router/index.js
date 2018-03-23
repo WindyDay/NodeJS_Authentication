@@ -1,14 +1,17 @@
 const DIR_PUBLIC = __dirname + "/public/";
-express = require('express');
+const users = require('./users');
+
 
 function route(server){
-    server.use(express.static("server/public"));
 
     server.get('/',function(req, res){
-        res.status(200);
-        res.sendFile(DIR_PUBLIC+'index.html');
-        console.log(DIR_PUBLIC+'index.html');
+        res.render('index');
+        // res.status(200);
+        // res.sendFile(DIR_PUBLIC+'index.html');
+        // console.log(DIR_PUBLIC+'index.html');
     })
+
+    server.use('/users', users);
 }
 
 module.exports = {
