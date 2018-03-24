@@ -10,28 +10,10 @@
 .bglightgray{
     background-color: lightgray;
 } */
-.title{
-    text-align: left;
-    text-transform: uppercase;
-    margin: 25px;
+.top-10{
+    margin-top: 10px;
 }
-.row{
-    margin-top: 8px;
-    margin-bottom: 8px;
-    /* height: 100px; */
-}
-#notification{
-    color: red;
-}
-.container{
-    width: 560px;
-    display: table;
-}
-.btn{
-    padding-left: 15px !important;
-}
-@media (min-width: 768px){
-    .equal{
-        height: 40px;
-    }
+
+.full-width{
+    width: 100% !important;
 }
