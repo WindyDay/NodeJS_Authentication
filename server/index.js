@@ -7,7 +7,7 @@ bodyParser = require('body-parser');
 session = require('express-session');
 passport = require('passport');
 LocalStrategy = require('passport-local').Strategy;
-
+expressValidator = require('express-validator');
 function start() {
     const PORT = process.env.PORT || 9000;
 
@@ -17,6 +17,7 @@ function start() {
     
     server.set('views', __dirname + '/views');
 
+    server.use(expressValidator());  //this line to be addded
     server.use(morgan('dev'));
     server.use(express.static(__dirname + "/public"));
 
