@@ -1,1 +1,45 @@
-LOGIN PAGE
+<form action="\users\login" method="post">
+
+    <div class="form-group">
+
+        <div class="row top-10 ">
+            <div class="col-md-4 offset-md-4">
+                <h3 class="page-header">Login</h3>
+
+
+                {{#if success_msg}}
+                        <div class="alert alert-success">{{success_msg}}</div>
+                {{/if}}
+
+                {{#if err_msg}}
+                        <div class="alert alert-danger">{{err_msg}}</div>
+                {{/if}}
+                
+                {{#if errors}} {{#each errors}}
+                    <div class="alert alert-danger">{{msg}}</div>
+                {{/each}} {{/if}}
+            </div>
+        </div>
+
+        <div class="row top-10">
+            <div class="col-md-4 offset-md-4">
+
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" name="email" aria-describedby="helpId" placeholder="Email">
+            </div>
+        </div>
+        <div class="row top-10">
+            <div class="col-md-4 offset-md-4">
+
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" name="password" aria-describedby="helpId" placeholder="Password">
+            </div>
+        </div>
+
+        <div class="row top-10">
+            <div class="col-md-4 offset-md-4 ">
+                <button type="summit" class="btn btn-success full-width">Login</button>
+            </div>
+        </div>
+    </div>
+</form>
