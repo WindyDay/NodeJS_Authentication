@@ -2,7 +2,7 @@
 
 var express = require('express')
 var router = express.Router()
-
+var user = require('../models/user')
 
 router.get('/register', function (req, res) {
     res.render('register')
@@ -29,10 +29,19 @@ router.post('/register',
             })
         }
         else{
-            console.log("No errors");
+            var newUser = new user.User({
+                fullName:fullName,
+                email:email,
+                password:password
+            });
+
+            user.createNewUser(newUser);
+
+            res.redirect('login' + '/?register=\"success\"');
         }
 
     })
+
 router.get('/login', function (req, res) {
     res.render('login')
 })

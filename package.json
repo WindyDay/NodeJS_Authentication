@@ -16,6 +16,8 @@
     "express-validator": "^5.0.3",
     "handlebars": "^4.0.11",
     "hbs": "^4.0.1",
+    "md5": "^2.2.1",
+    "mongoose": "^5.0.11",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.2",
     "passport": "^0.4.0",
