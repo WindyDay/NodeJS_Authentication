@@ -10,7 +10,6 @@ session = require('express-session');
 passport = require('passport');
 LocalStrategy = require('passport-local').Strategy;
 expressValidator = require('express-validator');
-flash = require('flash');
 
 function start() {
     const PORT = process.env.PORT || 9000;
@@ -40,23 +39,13 @@ function start() {
     server.use(passport.session());
     //server.use(expressValidator(errorFormatter (param, msg, value, location)));
 
-    server.use(flash());
-
-    server.use(function (req, res, next) {
-        res.locals.success_msg = req.flash('success_msg');
-        console.log(req.flash('success_msg'));
-        res.locals.err_msg = req.flash('err_msg');
-        // res.locals.errors = req.flash('errors');
-
-        next();
-      })
-
     router.route(server);
 
     server.listen(PORT, () => {
         console.log("Server is running on port " + PORT);
     })
 }
+
 
 module.exports = {
     start: start,

@@ -39,14 +39,14 @@ router.post('/register',
             user.createNewUser(newUser, (err, user)=>{
                 if(err) {
                     console.log(err.message.yellow);
-                    //req.session.err_msg = 'Fail to registed! May be this email has been used';
-                    req.flash('err_msg', 'Email existed')
-                    res.redirect('login');
+                    res.render('register', {
+                        errors:[{msg:'Email existed'}],
+                    })
                 }
                 else {
                     console.log(JSON.stringify(user).green);
                     //req.session.success_msg = 'You can now login';
-                    req.flash('success_msg', 'You can now login')
+                    // req.flash('success_msg', 'You can now login')
                     res.render('login');
                     // res.redirect('login' + '/?register=\"success\"');
                 };
