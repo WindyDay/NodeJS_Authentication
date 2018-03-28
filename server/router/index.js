@@ -4,12 +4,7 @@ const users = require('./users');
 
 function route(server){
 
-    server.get('/',function(req, res){
-        try {
-            console.log("THIS IS USER\n" +  req.user);
-        } catch (error) {
-            console.log('NO USER');
-        }
+    server.get('/', requireAthenticated, function(req, res){
         res.render('index');
         // res.status(200);
         // res.sendFile(DIR_PUBLIC+'index.html');
@@ -18,6 +13,15 @@ function route(server){
 
     server.use('/users', users);
 }
+
+function requireAthenticated(req,res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }else{
+        req.flash('error_msg', 'You need to login first');
+        res.redirect('/users/login');
+    }
+};
 
 module.exports = {
     route:route,
