@@ -24,9 +24,26 @@ function createNewUser(newUser, callback) {
     newUser.save(callback);
 
 }
+
+function findUserByEmail(email, callback){
+    let query = {email:email};
+
+    User.findOne(query, callback);
+}
+
+function findUserById(id, callback){
+    User.findById(id, callback)
+}
+
+function matchPassword(notHashedPass, hashedPass){
+    return md5(notHashedPass)===hashedPass;
+}
 module.exports = {
     User: User,
     createNewUser: createNewUser,
+    matchPassword: matchPassword,
+    findUserById:findUserById,
+    findUserByEmail:findUserByEmail,
 }
 // const kitty = new Cat({ name: 'Zildjian' });
 // kitty.save().then(() => console.log('meow'));

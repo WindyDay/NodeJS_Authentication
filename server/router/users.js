@@ -2,7 +2,9 @@
 colors = require('colors')
 var express = require('express')
 var router = express.Router()
-var user = require('../models/user')
+var User = require('../models/user')
+var passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
 
 
 router.get('/register', function (req, res) {
@@ -24,31 +26,26 @@ router.post('/register',
 
         const errors = req.validationErrors();
 
-        if(errors){
+        if (errors) {
             res.render('register', {
-                errors:errors,
+                errors: errors,
             })
-        }
-        else{
-            var newUser = new user.User({
-                fullName:fullName,
-                email:email,
-                password:password
+        } else {
+            var newUser = new User.User({
+                fullName: fullName,
+                email: email,
+                password: password
             });
 
-            user.createNewUser(newUser, (err, user)=>{
-                if(err) {
+            User.createNewUser(newUser, (err, user) => {
+                if (err) {
                     console.log(err.message.yellow);
-                    res.render('register', {
-                        errors:[{msg:'Email existed'}],
-                    })
-                }
-                else {
+                    req.flash('error', 'Email existed');
+                    res.redirect('/users/login');
+                } else {
                     console.log(JSON.stringify(user).green);
-                    //req.session.success_msg = 'You can now login';
-                    // req.flash('success_msg', 'You can now login')
-                    res.render('login');
-                    // res.redirect('login' + '/?register=\"success\"');
+                    req.flash('success_msg', 'You can now login')
+                    res.redirect('/users/login');
                 };
             });
 
@@ -56,8 +53,66 @@ router.post('/register',
 
     })
 
+
 router.get('/login', function (req, res) {
     res.render('login');
-})
+});
+
+passport.use(new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password'
+    },
+    function (email, password, done) {
+        User.findUserByEmail(email, function (err, user) {
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                return done(null, false, {
+                    message: 'Incorrect email.'
+                });
+            }
+
+            if (User.matchPassword(password, user.password)) {
+                
+                return done(null, user);
+            } else {
+                return done(null, false, {
+                    message: 'Incorrect password.'
+                });
+            }
+        });
+
+    }
+));
+
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+    User.findUserById(id, function (err, user) {
+        done(err, user);
+    });
+});
+
+router.post('/login', (req, res, next) => {
+        req.body.email = req.body.email.trim().toLowerCase();
+        next();
+    },
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/users/login',
+        failureFlash: true
+    }),
+    function (req, res) {
+        res.redirect('/');
+    });
+
+router.get('/logout', function (req, res) {
+    req.logout();
+    req.flash('success_msg', 'You are logged out');
+    res.redirect('/users/login');
+});
 
 module.exports = router;
